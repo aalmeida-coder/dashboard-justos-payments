@@ -100,7 +100,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#F5F4EF;color:var(--k
 .ksub{font-size:11px;color:var(--mu);margin-top:4px;line-height:1.4;}
 
 /* PHASE */
-.phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:2rem;}
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:2rem;}
 .phase-card{background:#FAFAF6;border:1px solid var(--bd);border-radius:var(--r);padding:.95rem 1.05rem;position:relative;overflow:hidden;transition:border-color .15s,transform .1s;}
 .phase-card:hover{border-color:var(--bd2);transform:translateY(-1px);}
 .pc-bar{position:absolute;top:0;left:0;right:0;height:2px;}
@@ -641,19 +641,12 @@ function renderMonth(m) {
         ? '<div class="pc-delta" style="color:'+(up?'#16724f':'#b83030')+'">'+(delta>0?'▲ +':'▼ ')+Math.abs(delta)+' vs mês ant.</div>'
         : (delta===0 ? '<div class="pc-delta" style="color:var(--mu)">= igual ao mês ant.</div>' : '');
 
-      const meta = FASE_META[e.lbl] || {};
-      const desc = meta.desc ? '<div class="pc-desc">'+meta.desc+'</div>' : '';
-      const val  = meta.valFn ? meta.valFn(d) : null;
-      const moneyHtml = val ? '<div class="pc-money" style="color:'+e.c+'">'+fmtFull(val)+'</div>' : '';
-
       return '<div class="phase-card">'
         +'<div class="pc-bar" style="background:'+e.c+'"></div>'
         +'<span class="pc-icon">'+e.icon+'</span>'
         +'<div class="pc-lbl">'+e.lbl+'</div>'
         +'<div class="pc-num" style="color:'+e.c+'">'+e.ct+'</div>'
-        +moneyHtml
         +'<div class="pc-pct">'+pct(e.ct,d.total)+' dos cards</div>'
-        +desc
         +ds
         +'</div>';
     }).join('');
@@ -664,9 +657,8 @@ function renderMonth(m) {
       +'<span class="pc-icon">📊</span>'
       +'<div class="pc-lbl">Total do mês</div>'
       +'<div class="pc-num">'+d.total+'</div>'
-      +'<div class="pc-money" style="color:#7A6F00">'+fmtFull(d.valor)+'</div>'
+      +'<div class="pc-money" style="color:#7A6F00">'+fmtK(d.valor)+'</div>'
       +'<div class="pc-pct">100% dos cards</div>'
-      +'<div class="pc-desc">Valor total que entrou para pagamento</div>'
       +'</div>';
 
     return cards;
@@ -695,13 +687,11 @@ function renderMonth(m) {
     const ds = delta !== null && delta !== 0
       ? '<div class="pc-delta" style="color:'+(up?'#16724f':'#b83030')+'">'+(delta>0?'▲ +':'▼ ')+Math.abs(delta)+' vs mês ant.</div>'
       : '';
-    const desc = AND_DESC[f] ? '<div class="pc-desc">'+(AND_DESC[f])+'</div>' : '';
     return '<div class="phase-card"><div class="pc-bar" style="background:'+cfg.c+'"></div>'
       +'<span class="pc-icon">'+cfg.i+'</span>'
       +'<div class="pc-lbl">'+f+'</div>'
       +'<div class="pc-num" style="color:'+cfg.c+'">'+ct+'</div>'
       +'<div class="pc-pct">'+pct(ct,d.total)+' do total do mês</div>'
-      +desc
       +ds+'</div>';
   }).join('') : '<div class="empty">Nenhum card em andamento.</div>';
 
